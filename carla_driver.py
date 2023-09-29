@@ -12,21 +12,29 @@ import carla
 # for network computer, 'localhost' should be full IP address; port number
 client = carla.Client('localhost', 2000)
 world = client.get_world()
+client.set_timeout(10.0) # seconds
 
 # to create objects: vehicles, pedestrians, props
 bp_lib = world.get_blueprint_library()
 spawn_points = world.get_map().get_spawn_points()
 
-# Get the blueprint for the vehicle you want
-vehicle_bp = bp_lib.find('vehicle.lincoln.mkz_2020')
+# Get the blueprint for the vehicle you want ('vehicle.lincoln.mkz_2020' works)
+vehicle_bp = bp_lib.find('vehicle.ford.mustang')
+# vehicle_bp.set_attribute('color', '255,0,0')
 
 # Try spawning the vehicle at a randomly chosen spawn point
+#transform = Transform(Location(x=230, y=195, z=40), Rotation(yaw=180))
+#actor = world.spawn_actor(blueprint, transform)
 vehicle = world.try_spawn_actor(vehicle_bp, random.choice(spawn_points))
 
 # Move the spectator behind the vehicle
 spectator = world.get_spectator()
 transform = carla.Transform(vehicle.get_transform().transform(carla.Location(x=-4, z=2.5)), vehicle.get_transform().rotation)
 spectator.set_transform(transform)
+
+# add pedestrian
+pedestrian_bp = bp_lib.find('walker.pedestrian.0049')
+pedestrian_1 = world.try_spawn_actor(pedestrian_bp, random.choice(spawn_points))
 
 # Add traffic to the simulation
 for i in range(30):
