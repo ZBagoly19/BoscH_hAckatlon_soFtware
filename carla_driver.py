@@ -16,7 +16,7 @@ from carla import Transform, Location, Rotation
 # for network computer, 'localhost' should be full IP address; port number
 client = carla.Client('localhost', 2000)
 world = client.get_world()
-client.set_timeout(10.0) # seconds
+client.set_timeout(10.0)  # seconds
 
 # to create objects: vehicles, pedestrians, props
 bp_lib = world.get_blueprint_library()
@@ -27,8 +27,8 @@ vehicle_bp = bp_lib.find('vehicle.ford.mustang')
 # vehicle_bp.set_attribute('color', '255,0,0')
 
 # Try spawning the vehicle at a randomly chosen spawn point
-#random.choice(spawn_points)
-print("Number of spawn poins:", len(spawn_points))
+# random.choice(spawn_points)
+print("Number of spawn points:", len(spawn_points))
 vehicle = world.try_spawn_actor(vehicle_bp, spawn_points[0])
 
 with open('data/DevelopmentData.csv') as csvfile:
@@ -85,14 +85,24 @@ for row in data_reader:
 
     # Move objects
     location = vehicle.get_location()
-    location.x += 2.0
-    location.y += 2.0
+    location.x += row[29]
+    location.y += row[30]
     pedestrian_1.set_location(location)
 
     location = vehicle.get_location()
-    location.x += 1.0
-    location.y += 1.0
+    location.x += row[31]
+    location.y += row[32]
     pedestrian_2.set_location(location)
+
+    location = vehicle.get_location()
+    location.x += row[33]
+    location.y += row[34]
+    pedestrian_3.set_location(location)
+
+    location = vehicle.get_location()
+    location.x += row[35]
+    location.y += row[36]
+    pedestrian_4.set_location(location)
 
     # Add traffic to the simulation
     # for i in range(30):
