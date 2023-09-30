@@ -19,9 +19,33 @@ spawn_points = world.get_map().get_spawn_points()
 
 # Get the blueprint for the vehicle you want ('vehicle.lincoln.mkz_2020' works)
 vehicle_bp = bp_lib.find('vehicle.ford.mustang')
-# vehicle_bp.set_attribute('color', '255,0,0')
+vehicle_bp.set_attribute('color', '255, 0, 0')
+
+print(len(spawn_points))
 
 # Try spawning the vehicle at a randomly chosen spawn point
 #random.choice(spawn_points)
-print("Number of spawn points:", len(spawn_points))
+#transform = Transform(Location(x=230, y=195, z=40), Rotation(yaw=180))
 vehicle = world.try_spawn_actor(vehicle_bp, spawn_points[0])
+
+
+
+if vehicle is None:
+    vehicle = world.get_actors().find(124)
+
+print(world.get_actors())
+# Add pedestrians
+transform_p1 = Transform(vehicle.get_transform().transform(Location(x=11, y=-64)), Rotation(yaw=180))
+loc = vehicle.get_location()
+loc.y += +78
+loc.z += 2
+loc.x += +11
+transfor2 = Transform(loc)
+pedestrian_bp = bp_lib.find('walker.pedestrian.0019')
+print(transfor2)
+pedestrian_1 = world.try_spawn_actor(pedestrian_bp, transfor2)
+
+# Move the spectator behind the vehicle
+spectator = world.get_spectator()
+transform = Transform(pedestrian_1.get_transform().transform(Location(x=-4, z=2.5)), pedestrian_1.get_transform().rotation)
+spectator.set_transform(transform)
